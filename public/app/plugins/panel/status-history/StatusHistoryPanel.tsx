@@ -9,7 +9,6 @@ import { HoverEvent, setupConfig } from '../barchart/config';
 import { TimelineChart } from '../state-timeline/TimelineChart';
 import { TimelineMode } from '../state-timeline/types';
 import { prepareTimelineFields, prepareTimelineLegendItems } from '../state-timeline/utils';
-import { OutsideRangePlugin } from '../timeseries/plugins/OutsideRangePlugin';
 
 import { StatusHistoryTooltip } from './StatusHistoryTooltip';
 import { StatusPanelOptions } from './types';
@@ -178,7 +177,6 @@ export const StatusHistoryPanel: React.FC<TimelinePanelProps> = ({
                 </VizTooltipContainer>
               )}
             </Portal>
-            <OutsideRangePlugin config={config} onChangeTimeRange={onChangeTimeRange} />
           </>
         );
       }}

@@ -4,6 +4,7 @@ ENV NODE_OPTIONS=--max_old_space_size=8000
 
 WORKDIR /grafana
 
+RUN export NODE_OPTIONS="--max-old-space-size=8192"
 COPY package.json yarn.lock .yarnrc.yml ./
 COPY .yarn .yarn
 COPY packages packages
@@ -18,6 +19,7 @@ COPY scripts scripts
 COPY emails emails
 
 ENV NODE_ENV production
+RUN export NODE_OPTIONS="--max-old-space-size=16000"
 RUN yarn build
 
 FROM golang:1.17.7-alpine3.15 as go-builder
