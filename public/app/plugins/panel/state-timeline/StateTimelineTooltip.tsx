@@ -6,6 +6,8 @@ import {
   Field,
   getDisplayProcessor,
   getFieldDisplayName,
+  getValueFormat,
+  formattedValueToString,
   TimeZone,
   LinkModel,
 } from '@grafana/data';
@@ -43,24 +45,25 @@ export const StateTimelineTooltip: React.FC<StateTimelineTooltipProps> = ({
   const links: Array<LinkModel<Field>> = [];
   const linkLookup = new Set<string>();
 
-  for (const f of visibleFields) {
-    const v = f.values.get(datapointIdx);
-    const disp = f.display ? f.display(v) : { text: `${v}`, numeric: +v };
-    if (f.getLinks) {
-      f.getLinks({ calculatedValue: disp, valueRowIndex: datapointIdx }).forEach((link) => {
-        const key = `${link.title}/${link.href}`;
-        if (!linkLookup.has(key)) {
-          links.push(link);
-          linkLookup.add(key);
-        }
-      });
-    }
-  }
+
 
   const xField = alignedData.fields[0];
   const xFieldFmt = xField.display || getDisplayProcessor({ field: xField, timeZone, theme });
 
   const field = alignedData.fields[seriesIdx!];
+
+  const f = field;
+  const v = f.values.get(datapointIdx);
+  const disp = f.display ? f.display(v) : { text: `${v}`, numeric: +v };
+  if (f.getLinks) {
+    f.getLinks({ calculatedValue: disp, valueRowIndex: datapointIdx }).forEach((link) => {
+      const key = `${link.title}/${link.href}`;
+      if (!linkLookup.has(key)) {
+        links.push(link);
+        linkLookup.add(key);
+      }
+    });
+  }
 
   const dataFrameFieldIndex = field.state?.origin;
   const fieldFmt = field.display || getDisplayProcessor({ field, timeZone, theme });
@@ -110,7 +113,8 @@ export const StateTimelineTooltip: React.FC<StateTimelineTooltipProps> = ({
       {durationFragment}
       {links.length > 0 && (
         <VerticalGroup>
-          {links.map((link, i) => (
+          {
+          links.map((link, i) => (
             <LinkButton
               key={i}
               icon={'external-link-alt'}
@@ -122,7 +126,9 @@ export const StateTimelineTooltip: React.FC<StateTimelineTooltipProps> = ({
             >
               {link.title}
             </LinkButton>
-          ))}
+          ))
+          
+          }
         </VerticalGroup>
       )}
     </div>
@@ -130,3 +136,4 @@ export const StateTimelineTooltip: React.FC<StateTimelineTooltipProps> = ({
 };
 
 StateTimelineTooltip.displayName = 'StateTimelineTooltip';
+

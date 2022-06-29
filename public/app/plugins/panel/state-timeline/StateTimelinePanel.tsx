@@ -142,6 +142,7 @@ export const StateTimelinePanel: React.FC<TimelinePanelProps> = ({
       legendItems={legendItems}
       {...options}
       mode={TimelineMode.Changes}
+      allowPointerEvents={!isToolTipOpen.current}
     >
       {(config, alignedFrame) => {
         if (oldConfig.current !== config) {
@@ -175,3 +176,4 @@ export const StateTimelinePanel: React.FC<TimelinePanelProps> = ({
     </TimelineChart>
   );
 };
+

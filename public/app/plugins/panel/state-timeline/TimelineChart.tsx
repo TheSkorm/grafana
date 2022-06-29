@@ -26,9 +26,10 @@ export interface TimelineProps
   alignValue?: TimelineValueAlignment;
   colWidth?: number;
   legendItems?: VizLegendItem[];
+  allowPointerEvents?: boolean;
 }
 
-const propsToDiff = ['rowHeight', 'colWidth', 'showValue', 'mergeValues', 'alignValue'];
+const propsToDiff = ['rowHeight', 'colWidth', 'showValue', 'mergeValues', 'alignValue', 'allowPointerEvents'];
 
 export class TimelineChart extends React.Component<TimelineProps> {
   static contextType = PanelContextRoot;
@@ -67,6 +68,11 @@ export class TimelineChart extends React.Component<TimelineProps> {
 
   render() {
     return (
+      <div 
+        style={{
+          pointerEvents: this.props.allowPointerEvents ? 'auto' : 'none'
+        }}
+      >
       <GraphNG
         {...this.props}
         fields={{
@@ -77,6 +83,8 @@ export class TimelineChart extends React.Component<TimelineProps> {
         propsToDiff={propsToDiff}
         renderLegend={this.renderLegend}
       />
+      </div>
     );
   }
 }
+
